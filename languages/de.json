@@ -1,18 +1,88 @@
 {
     "ITEM-PILES": {
+        "Items": "Gegenstände",
+        "Currencies": "Währungen",
+        "Currency": "Währung",
+        "ContextMenu": {
+            "ShowToPlayers": "Gegenstandstapel: Zeige Spielern Stapel",
+            "RequestTrade": "Gegenstandstapel: Erbitte Handel"
+        },
         "Inspect": {
             "Title": "Untersuche Gegenstandstapel",
-            "AsActor": "Du untersuchst diesen Stapel als {actorName}",
-            "NoActor": "Du untersuchst den Inhalt dieses Stapels ohne ein Token zu kontrollieren. Dies bedeutet du kannst keine Gegenstände vom Stapel nehmen.",
+            "AsActor": "Du untersuchst diesen Stapel als <a class='item-piles-change-actor item-piles-highlight'>{actorName}</a>",
+            "Owner": "Als Besitzer dieses Stapels kannst du seinen Inhalt bearbeiten",
             "Empty": "Dieser Stapel ist leer.",
             "Destroyed": "Dieser Stapel existiert nicht mehr und liegt brach.",
             "TakeAll": "Alles nehmen",
             "Take": "Nehmen",
             "Close": "Kiste schliessen",
-            "Leave": "Verlassen"
+            "Leave": "Verlassen",
+            "NoShareLeft": "Nichts zum teilen übrig...",
+            "NoneLeft": "Nichts übrig...",
+            "OpenSheet": "Öffne Formular",
+            "AddCurrency": "Währung zufügen",
+            "SplitAll": "Alles auf {num_players} aufteilen",
+            "SplitItems": "Gegenstände auf {num_players} aufteilen",
+            "SplitCurrencies": "Geld auf {num_players} aufteilen"
+        },
+        "Trade": {
+            "Title": "Gegenstandsstapel: Handeln",
+            "Accept": "Annehmen",
+            "Decline": "Ablehnen",
+            "Mute": "Stummschalten",
+            "AutoDecline": "Du hast nicht schnell genug auf eine Handelsanfrage reagiert, daher wurde sie automatisch abgelehnt.",
+            "Declined": "Der andere Spieler hat den Handel abgelehnt.",
+            "Private": "Diesen Handel privat machen",
+            "PrivateExplanation": "Keine Chatmeldung, niemand kann den Handel beobachten",
+            "Over": "Der Handel ist nicht länger aktiv.",
+            "Between": "Handel zwischen {actor_1} und {actor_2}",
+            "DragDrop": "Ziehen & fallenlassen von Gegeständen um mit dem Handel zu beginnen",
+            "Request": {
+                "Title": "Gegenstandsstapel: Handelsanfrage senden",
+                "User": "Wählen den Benutzer zum Handeln:",
+                "PickActor": "Wähle den Darsteller den du in diesem Handel repräsentieren willst:",
+                "PickedActor": "Der Darsteller den du repräsentierst:",
+                "PickToken": "Wähle ausgewähltes Token",
+                "DropActor": "Ziehe und lass den Akteur hier fallen",
+                "Label": "Sende Handelsanfrage"
+            },
+            "NoActiveUsers": {
+                "Title": "Gegenstandsstapel: Keine aktiven Benutzer",
+                "Content": "Keine aktiven SPieler, daher kannst du mit niemanden handeln."
+            },
+            "Prompt": {
+                "Title": "Gegenstandsstapel: Handelsanfrage",
+                "Content": "{trading_actor_name} (user {trading_user_name}) möchte mit dir Handeln.",
+                "PrivateContent": "{trading_actor_name} (user {trading_user_name}) möchte <strong>privat</strong> mit dir handeln.",
+                "AcceptQuery": "Akzeptierst du?"
+            },
+            "OngoingRequest": {
+                "Content": "Warte auf eine Antwort von {user_name}...",
+                "Label": "Breche Handelsanfrage ab"
+            },
+            "CancelledRequest": {
+                "Content": "Die Handelsanfrage wurde abgebrochen von {user_name}."
+            },
+            "AddCurrency": {
+                "Title": "Währung zufügen",
+                "Content": "Füge Geld zum laufenden Handel mit {trader_actor_name} hinzu",
+                "Label": "Währungen aktualisieren"
+            },
+            "GMAddCurrency": "Geld hinzufügen (GM mode)",
+            "Closed": {
+                "Title": "Handel abgeschlossen",
+                "You": "Du hast das Handelsfenster geschlossen, daher wurde der Handel abgebrochen.",
+                "Them": "Benutzer \"{user_name}\" hat das Handelsfenster geschlossen, der Handel wurde abgebrochen.",
+                "Someone": "Einer der Beteiligten hat das Handelsfenster geschlossen, der Handel wurde abgebrochen."
+            },
+            "Disconnected": "Einer der Benutzer hat die Verbindung verloren, der Handel wurde abgebrochen.",
+            "UserCharacterWarning": "Du hast den Akteuer \"{actor_name}\" gewählt welcher der zugewiesene Charakter des Spielers \"{player_name}\" ist.<br><br>Bist du sicher das du dies tun willst?",
+            "UserActiveCharacterWarning": "Du hast den Akteur \"{actor_name}\" gewählt welcher der zugewiesene Charakter des Spielers \"{player_name}\" ist, der auch <strong>aktiv</strong> ist.<br><br>Bist du sicher das du das tun willst?",
+            "ActorOwnerWarning": "Du besitzt diesen Akteur nicht, daher kannst du ihn nicht zum handeln verwenden."
         },
         "Errors": {
             "DisallowedItemDrop": "Du kannst keinen Gegenstand vom Typ \"{type}\" hier fallen lassen.",
+            "DisallowedItemTrade": "Du kannst keinen Gegenstand vom Typ \"{type}\" handeln",
             "NoSourceDrop": "Du kannst keine Gegenstände aus der Gegenstandsleiste fallen lassen, es sei denn, du bist ein GM.",
             "PileTooFar": "Du bist zu weit entfernt um mit dem Stapel zu interagieren",
             "PileLocked": "Dieser Stapel ist gesperrt und verschlossen - du kannst keine Gegenstände hier fallen lassen.",
@@ -20,162 +90,229 @@
         },
         "Dialogs": {
             "DropTypeWarning": {
-                "Title": "Gegenstand Typ Warnung",
-                "Content": "Du versuchst einen Gegenstand vom Typ (\"{type}\") hier abzulegen was normal nicht erlaubt ist. Bist du sicher das du das tun willst?"
+                "Title": "Item Type Warning",
+                "Content": "You're dropping an item that is of a type (\"{type}\") that is normally not allowed to be dropped. Are you sure you want to do this?"
+            },
+            "TradeTypeWarning": {
+                "Title": "Item Type Warning",
+                "Content": "You're attempting to trade an item that is of a type (\"{type}\") that is normally not allowed to be traded. Are you sure you want to do this?"
             },
             "ResetSettings": {
-                "Title": "Setze Einstellungen von Gegenstandsstapel zurück",
-                "Content": "Bist du sicher das du alle Einstellungen vom Gegenstandsstapelmodul auf die Standardwerte des Systems zurücksetzen willst ? <strong>DIES KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!</strong>",
-                "Confirm": "Moduleinstellungen zurücksetzen"
+                "Title": "Reset Item Piles Module Settings",
+                "Content": "Are you sure you want to reset all of the Item Piles module settings to the current system's defaults? <strong>THIS CANNOT BE UNDONE!</strong>",
+                "Confirm": "Reset Module Settings"
             },
             "LinkedActorWarning": {
-                "Title": "Gegenstandsstapel & verlinkter Akteur",
-                "Content": "Bist du sicher das du diesen <strong>verlinkten Akteuer</strong> in einen Gegenstandstapel ändern willst ? Alle Akteur-Token bei verlinkten Akteueren teilen sich ein Inventar und Attribute"
+                "Title": "Item Piles & Linked Actor",
+                "Content": "Are you sure you want to turn this <strong>linked actor</strong> into an item pile? This actor's token is linked and all tokens of this actor will share its inventory and currencies."
             },
             "NoSystemFound": {
-                "Title": "System nicht erkannt",
-                "Content": "Dein Spielsystem wird im Moment nicht vollständig unterstützt. Das bedeutet das diesem Modul nicht bekannt ist wie es am besten mit den Gegenständen des Systems umgehen muss. Du kannst dieses Modul trotzdem verwenden, aber die Funktionalität könnte eingeschränkt sein.<br><br>Du kannst die Einstellung für dein Spielsystem selbst vornehmen, dies erfordert ein wenig technische Kenntnis.<br><br>Wenn du Fragen hast kontaktiere <strong>Wasp#2005</strong> auf dem Foundry Discord Server."
+                "Title": "System Not Recognized",
+                "Content": "This system is not currently fully supported. This means that the module does not know how to best handle this system's items, but can still operate in a limited fashion.<br><br>You can configure the module's settings yourself, but it requires a bit of technical know-how.<br><br>If you have any questions, ping <strong>Wasp#2005</strong> on the Foundry discord."
             },
             "SystemFound": {
-                "Title": "Spielsystem erfolgreich erkannt",
-                "Content": "Dein Spielsystem wurde in vorherigen Versionen dieses Modules nicht untersützt. Diese Unterstützung wurde nun mit dem Update hinzugefügt!<br><br>Möchtest du nun die Standardeinstellungen deines Spielsystems im Gegenstandsstapel-Modul laden?",
-                "Confirm": "Standardeinstellungen setzen"
+                "Title": "System Recognized",
+                "Content": "This system was previously not supported, but in an recent update it was added as a supported system!<br><br>Do you want to load this system's default Item Pile settings?",
+                "Confirm": "Apply System Defaults"
             },
-            "Cancel": "Abbrechen"
+            "ResetSharingData": {
+                "Title": "Reset Sharing Data",
+                "Content": "This will reset all of the history of players having taken their share from this pile.<br><br>Are you sure you want to do this?",
+                "Confirm": "Reset Sharing Data"
+            },
+            "Cancel": "Cancel"
         },
-        "AttributeEditor": {
-            "Title": "Dynamischer Attribute Editor",
-            "Explanation": "Hier kannst du festlegen, welche Attribute von Charakteren von Gegenstandsstapeln abgeholt werden können, z.B. Währungen. In D&D5e gibt es Währungen für Akteure mit dem Attributspfad \"actor.data.data.currency.gp\", also fügst du deine eigene mit dem Namen \"Goldmünzen\" und dem Attributspfad \"data.currency.gp\" hinzu.",
-            "Name": "Attributsname",
-            "Icon": "Attribut Icon",
-            "AddNew": "Neues Attribut zufügen",
-            "Submit": "Attribut übermitteln"
+        "CurrenciesEditor": {
+            "Title": "Currencies Editor",
+            "Explanation": "Here you can define which currencies on characters that can be picked up from item piles, such as currencies. In D&D5e, currencies exist on actors on the attribute path \"actor.data.data.currency.gp\", so you'd add your own with the name \"Gold Coins\" and attribute path \"data.currency.gp\".",
+            "Name": "Currency name",
+            "Path": "Currency path",
+            "Icon": "Currency icon",
+            "AddNew": "Add new currency",
+            "Submit": "Submit currencies"
         },
         "FilterEditor": {
-            "Title": "Gegenstandsfilter Editor",
-            "Explanation": "Hier kannst du mehrere Arten von Filtern definieren, die bestimmte Arten von Gegenständen ausschließen. Basierend auf dem angegebenen Attributpfad kann der Gegenstandsstapel den \"Typ\" eines Gegenstands finden, und basierend auf den Filtern werden diese Gegenstände in der Benutzeroberfläche des Gegenstandsstapels ausgeblendet.",
-            "Filters": "Filter",
-            "AddNew": "Neuer Filter zufügen",
-            "Submit": "Filter übertragen"
+            "Title": "Item Filters Editor",
+            "Explanation": "Here you can define multiple types of filters that will exclude certain types of items. Based on the attribute path given, the item pile could find the \"type\" of an item and based on the filters, it hides those items in the item pile inventory UI.",
+            "Filters": "Filters",
+            "Path": "Attribute path",
+            "AddNew": "Add new filter",
+            "Submit": "Submit filters"
         },
-        "AttributePath": "Attributspfad",
+        "SimilaritiesEditor": {
+            "Title": "Item Similarities Editor",
+            "Explanation_P1": "Here you can define multiple types of identifiers that helps Item Piles differentiate between similar items. In almost every system, items can be differentiated with their \"name\" and \"type\".",
+            "Explanation_P2": "But in some cases, such as in Pathfinder 2nd Edition, temporary items may share those with permanent items. So by adding \"data.temporary.value\", you temporary items are considered \"unique\".",
+            "Path": "Attribute path",
+            "AddNew": "Add new attribute path",
+            "Submit": "Submit item similarities"
+        },
         "Defaults": {
-            "Title": "Gegenstandsstapel Konfiguration",
-            "Configure": "Gegenstandsstapel",
-            "Update": "Gegenstandsstapel aktualisieren",
+            "Title": "Item Pile Configuration",
+            "Configure": "Item Pile",
+            "Update": "Update Item Pile",
             "Main": {
-                "Title": "Hauptmenü",
-                "EnabledPile": "Aktiviert",
-                "EnabledPileExplanation": "Bestimmt ob sich dies als Gegenstandsstapel verhalten soll.",
-                "InspectItems": "Gegenstände prüfbar aktivieren",
-                "InspectItemsExplanation": "Durch Klick auf den Namen des Gegenständes wird das Gegenstandsfenster geöffnet.",
-                "Distance": "Interaktionsreichweite",
-                "GridUnits": "Gittereinheiten (leer lassen für unbegrenzt)",
-                "Macro": "Macro bei Interaktion",
-                "MacroExplanation": "Name des Makros, das ausgeführt werden soll, wenn mit diesem Stapel interagiert wird.",
-                "MacroPlaceholder": "Macro Name einfügen",
-                "DeleteWhenEmpty": "Löschen wenn leer",
-                "DeleteWhenEmptyExplanation": "Bewirkt, dass sich der Gegenstandsstapel selbst löscht, sobald er leer ist.",
-                "DeleteWhenEmptyDefault": "Standardeinstellung des Moduls",
-                "DeleteWhenEmptyYes": "Ja, löschen, wenn leer",
-                "DeleteWhenEmptyNo": "Nein, nicht löschen wenn leer",
-                "OverrideAttributes": "Dynamische Attribute außer Kraft setzen",
-                "OverrideAttributesExplanation": "Legen Sie fest, ob dieser Stapel andere Attribute als die Standardattribute übertragen können soll.",
-                "ConfigureOverrideAttributes": "Konfiguriere: Dynamische Attribute außer Kraft setzen",
-                "OverrideItemFilters": "Übersteuere Gegenstandsfilter",
-                "OverrideItemFiltersExplanation": "Lege fest, ob dieser Stapel in der Lage sein soll, andere Arten von Gegenständen als die Standardtypen zu übertragen.",
-                "ConfigureOverrideItemFilters": "Konfiguriere den Gegenstandsfilter"
+                "Title": "Main Settings",
+                "EnabledPile": "Enabled",
+                "EnabledPileExplanation": "Whether this should act as an item pile.",
+                "InspectItems": "Enable Item Inspect",
+                "InspectItemsExplanation": "Clicking item names will open the item's sheet.",
+                "Distance": "Interaction Distance",
+                "GridUnits": "Grid Units (leave empty for infinite)",
+                "Macro": "On Interact Macro",
+                "MacroExplanation": "Name of macro to execute when this pile is interacted with.",
+                "MacroPlaceholder": "Insert macro name",
+                "DeleteWhenEmpty": "Delete when empty",
+                "DeleteWhenEmptyExplanation": "Causes this item pile to auto-delete itself once it's empty.",
+                "DeleteWhenEmptyDefault": "Default module setting",
+                "DeleteWhenEmptyYes": "Yes, delete when empty",
+                "DeleteWhenEmptyNo": "No, don't delete when empty",
+                "OverrideCurrencies": "Override Currencies",
+                "OverrideCurrenciesExplanation": "Configure if this pile should be able to transfer other currencies than the default.",
+                "ConfigureOverrideCurrencies": "Configure Override Currencies",
+                "OverrideItemFilters": "Override Item Filters",
+                "OverrideItemFiltersExplanation": "Configure if this pile should be able to transfer other types items than the default.",
+                "ConfigureOverrideItemFilters": "Configure Override Item Filters"
+            },
+            "Other": {
+                "Title": "Other Settings"
             },
             "SingleItem": {
-                "Title": "Einstellungen einzelner Gegenstand",
-                "DisplayOneContainerWarning": "Achtung! Du hast sowohl die Einstellung \"Einzelnes Artikelbild anzeigen\" als auch \"Ist Container\" aktiviert. In diesem Fall werden Bilder für den Container bevorzugt verwendet.",
-                "DisplayOne": "Einzelnes Artikelbild anzeigen",
-                "DisplayOneExplanation": "Besteht der Stapel aus einem einzigen Gegenstand, wird das Bild des Stapels auf das Bild des Gegenstandes gesetzt.",
-                "OverrideScale": "Einzelne Gegenstands-Token-Skalierung außer Kraft setzen",
-                "Scale": "Gegenstands-Token-Skalierung",
-                "ItemName": "Benutze Gegenstandsname",
-                "ItemNameExplanation": "Veranlasst, dass der Gegenstandsstapel nach dem einzelnen darin enthaltenen Gegenstand benannt wird."
+                "Title": "Single Item Settings",
+                "DisplayOneContainerWarning": "Warning! You have both \"Display Single Item Image\" and \"Is Container\" enabled. In this case, the container images takes priority.",
+                "DisplayOne": "Display Single Item Image",
+                "DisplayOneExplanation": "If the pile is made up of a single item, this sets the pile token's image to be the image of the item.",
+                "OverrideScale": "Override single item token scale",
+                "Scale": "Single item token scale",
+                "ItemName": "Use Item Name",
+                "ItemNameExplanation": "Causes the item pile to be named after the single item it contains."
             },
             "Container": {
-                "Title": "Einstellungen Container",
-                "IsContainer": "Ist Container",
-                "Locked": "Ist verschlossen",
-                "Closed": "Ist geschlossen",
-                "ClosedImagePath": "Pfad Bild Geschlossener Container",
-                "EmptyImagePath": "Pfad Bild Leerer Container",
-                "OpenedImagePath": "Pfad Bild Geöffneter Container",
-                "LockedImagePath": "Pfad Bild Verschlossener Container",
-                "CloseSoundPath": "Pfad Geräusch Schliessen",
-                "OpenSoundPath": "Pfad Geräusch Öffnen",
-                "LockedSoundPath": "Pfad Geräusch Verschlossen"
+                "Title": "Container Settings",
+                "IsContainer": "Is Container",
+                "Locked": "Is Locked",
+                "Closed": "Is Closed",
+                "ClosedImagePath": "Closed Image Path",
+                "EmptyImagePath": "Empty Image Path",
+                "OpenedImagePath": "Opened Image Path",
+                "LockedImagePath": "Locked Image Path",
+                "CloseSoundPath": "Closing Sound Path",
+                "OpenSoundPath": "Opening Sound Path",
+                "LockedSoundPath": "Locked Sound Path"
+            },
+            "Sharing": {
+                "Title": "Sharing Settings",
+                "ShareItemsEnabled": "Sharing Enabled: Items",
+                "ShareItemsEnabledExplanation": "When this is enabled, players can only take their share of the quantities of items. Disabled means they can take as much as they want.",
+                "ShareCurrenciesEnabled": "Sharing Enabled: Currencies",
+                "ShareCurrenciesEnabledExplanation": "When this is enabled, players can only take their share of the quantities of currencies. Disabled means they can take as much as they want.",
+                "TakeAllEnabled": "Enable Take All Button",
+                "TakeAllEnabledExplanation": "Enables the \"Take All\" button when looting this item pile. Requires both of the above sharing settings to be disabled.",
+                "SplitAllEnabled": "Enable Split With Players Button",
+                "SplitAllEnabledExplanation": "Enables the \"Split [number] ways\" button when looting this item pile. Pressing this button makes all players (or only active players, see below) receive their share of the item pile.",
+                "InactivePlayers": "Split Only With Active Players",
+                "InactivePlayersExplanation": "Only players who are active when this item pile is looted will be given their share of the pile.",
+                "ResetSharingData": "Reset Sharing Data",
+                "ResetSharingDataExplanation": "If the Item Pile's content was manually changed while people were looting it, the sharing data may become out of sync with the players' actual shares. Pressing this button will reset everyone's share in this pile."
             }
         },
         "HUD": {
-            "ToggleLocked": "Setze verschlossen",
-            "ToggleClosed": "Setze geschlossen",
-            "Configure": "Stapel konfigurieren"
+            "ToggleLocked": "Toggle Locked",
+            "ToggleClosed": "Toggle Closed",
+            "Configure": "Configure Pile"
         },
         "DropItem": {
-            "Title": "Gegenstand fallenlassen",
-            "Dropping": "Du lässt Gegenstand fallen",
-            "ExistingPiles": "Es gibt bereits einen Gegenstandsstapel an dieser Stelle, Sie werden Ihre(n) Gegenstand(e) zu diesem Stapel hinzufügen.",
-            "QuantityToDrop": "Du hast {Menge} Stück dieses Gegenstandes, wie viele willst du abgeben?",
-            "AddToPile": "Zum Stapel zufügen",
-            "NewPile": "Neuen Stapel erzeugen",
-            "Cancel": "Abbrechen"
+            "Title": "Dropping Item",
+            "Dropping": "You're dropping",
+            "ExistingPiles": "You're adding this item to the item pile \"{item_pile_name}\".",
+            "QuantityToDrop": "You have {quantity} of this item, how many do you want to drop?",
+            "AddToPile": "Add to pile",
+            "NewPile": "Create new pile",
+            "Cancel": "Cancel"
+        },
+        "DropCurrencies": {
+            "Title": "Dropping Currencies",
+            "Player": "You can drop the following currencies into this item pile:",
+            "GM": "As a GM, you can add currencies to this item pile:",
+            "NoCurrency": "{actor_name} has no valid currencies...",
+            "Cancel": "Cancel",
+            "AddToPile": "Add to pile"
         },
         "Chat": {
-            "Pickup": {
-                "Actor": "{name} hat sich folgende Gegenstände genommen:"
-            }
+            "Pickup": "{name} picked up the following items:",
+            "Split": "An item pile's content was split among {num_players} players, and each one has received:",
+            "TradeComplete": "{party_1} and {party_2} completed a trade.",
+            "TradeStarted": "{party_1} and {party_2} started a trade.",
+            "TradeStartedButton": "Click the button below to spectate:",
+            "TradeSpectate": "Spectate Trade",
+            "SpectateDisabled": "Trade Completed",
+            "PrivateTrade": "Private Trade",
+            "ExpandTrade": "View full trade details"
         },
         "Setting": {
             "Reset": {
-                "Title": "Einstellungen zurücksetzen",
-                "Label": "Einstellungen auf Standard zurücksetzen",
-                "Hint": "Dadurch werden alle Einstellungen der Gegenstandsstapel auf die Standardeinstellungen des aktiven Spielsystems zurückgesetzt."
+                "Title": "Reset settings to default",
+                "Label": "Reset Item Piles Settings To Default",
+                "Hint": "This will reset all of the settings of Item Piles back to the active game system's default."
             },
             "ActorClass": {
-                "Title": "Akteur Klassentyp",
-                "Label": "Diese Einstellung definiert den Typ des Akteurs, der für den Standard-Gegenstandsstapel-Akteur verwendet wird, der beim ersten Erzeugen eines Stapels erstellt wird. Im Falle von D&D5e ist dies \"character\", da es keinen eigenen Beuteakteurstyp gibt."
+                "Title": "Actor class type",
+                "Label": "This setting defines the type of actor that will be used for the default item pile actor that is created on first item drop. In the case of D&D5e, this is \"character\", as it does not have a dedicated loot actor type."
             },
             "Quantity": {
-                "Title": "Gegenstand Attribut Artikelmenge",
-                "Label": "Hier können Sie den Attributspfad für die Menge der einzelnen Gegenstände konfigurieren. Im D&D5e-System zum Beispiel wird die Menge jedes Gegenstands im Attribut \"item.data.data.quantity\" gespeichert, so dass Sie hier \"data.quantity\" eingeben müssen."
+                "Title": "Item quantity attribute",
+                "Label": "Here you can configure what the attribute path is for each item's quantity. For example, in D&D5e system, each item's quantity is stored in the item's \"item.data.data.quantity\" attribute, so you'd put \"data.quantity\" in this setting."
             },
-            "Attributes": {
-                "Title": "Dynamische Attribute",
-                "Label": "Attribute konfigurieren",
-                "Hint": "Mit dieser Einstellung werden die Attribute festgelegt, die für die Abholung in Artikelpfaden in Frage kommen, z. B. Währungen oder Stärken, bei denen es sich nicht um tatsächliche Artikel handeln muss."
+            "Currencies": {
+                "Title": "Currencies",
+                "Label": "Configure Currencies",
+                "Hint": "This setting define the currencies that are eligible for pickup, which may not be actual items but numerical inputs on the character sheet."
             },
             "ItemFilters": {
-                "Title": "Gegenstandsfilter",
-                "Label": "Gegenstandsfilter einstellen",
-                "Hint": "Hier können Sie einstellen, welche Gegenstände ignoriert und nicht in den Gegenstandsstapeldialogen aufgeführt werden."
+                "Title": "Item filters",
+                "Label": "Configure Item Filters",
+                "Hint": "Here you can configure what items are ignored and not listed in the item pile dialogs."
+            },
+            "ItemSimilarities": {
+                "Title": "Item Similarities",
+                "Label": "Configure Item Similarities",
+                "Hint": "Here you can configure what how items are detected to be the same in this system. Some systems may have data that distinguishes items differently than others, such as temporary items."
+            },
+            "EnableTrading": {
+                "Title": "Enable Trading",
+                "Hint": "This enables trading - with this disabled, no one can initiate any trade."
+            },
+            "ShowTradeButton": {
+                "Title": "Show Trade Button",
+                "Hint": "Enabling this will display a trade button just below the player list in the bottom right."
             },
             "OutputToChat": {
-                "Title": "Ausgabe im Chat",
-                "Label": "Eine Nachricht über den aufgehobenen Gegenstand wird immer in den Chat gesendet wenn ein Spieler einen Gegenstand vom Stapel nimmt.",
-                "Off": "Aus - schaltet Nachrichten ab",
-                "Public": "Öffentlich - jeder kann die Nachrichten sehen",
-                "SelfGM": "Privat - nur GMs und der betroffene User sehen die Nachricht",
-                "Blind": "Blind - nur die GMs sehen die Nachricht"
+                "Title": "Output to chat",
+                "Label": "Whenever any player picks up items from an item pile, this will send a message showing what was picked up.",
+                "Off": "Off - turn off messages",
+                "Public": "Public - everyone can see messages",
+                "SelfGM": "Private - only GMs and user can see messages",
+                "Blind": "Blind - only GMs can see messages"
+            },
+            "InvertSheetOpen": {
+                "Title": "Invert Ctrl + Double Click Open",
+                "Label": "Normally, you have to hold control when you want to open an item pile's actor sheet. Enabling this makes the item pile actor sheet open by default, and holding control opens the item pile inventory UI."
             },
             "HideActorHeaderText": {
-                "Title": "Verstecke Kopftext des Akteurs",
-                "Label": "Blendet den \"Gegenstandsstapel\" Text im Akteur Kopf aus - nützlich wenn du viele Module hast und der Kopftext bereits zu sehr befüllt wird."
+                "Title": "Hide actor header text",
+                "Label": "Hides the \"Item Piles\" text in the actor header - useful if you have too many modules, and the header is getting crowded."
             },
             "DeleteEmptyPiles": {
-                "Title": "Leere Stapel automatisch löschen",
-                "Label": "Dies führt dazu, dass sich Gegenstandsstapel selbst löschen, sobald sie keine Gegenstände mehr enthalten. Dies kann bei einzelnen Gegenstandsstapeln außer Kraft gesetzt werden."
+                "Title": "Auto-delete empty piles",
+                "Label": "This causes item piles to delete themselves once they run out of items. This can be overridden on individual item piles."
             },
             "PreloadFiles": {
-                "Title": "Dateien vorladen",
-                "Label": "Veranlasst, dass Dateien (Bilder und Audio) von Stapeln vorgeladen werden, was zu einem nahtlosen Erlebnis führt."
+                "Title": "Preload Files",
+                "Label": "Causes files (images and audio) of piles to be preloaded, resulting in a seamless experience."
             },
             "Debug": {
-                "Title": "Debugging einschalten",
-                "Label": "Gibt Debug-Meldungen auf der Konsole aus"
+                "Title": "Enable debugging",
+                "Label": "Prints debug messages to the console"
             }
         }
     }
